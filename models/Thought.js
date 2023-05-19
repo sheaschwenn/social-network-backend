@@ -12,5 +12,19 @@ const thoughtSchema = new mongoose.Schema({
     createdAt:{
         type: Date,
         default: Date.now
+    },
+    username:{
+        type:String,
+        required:true
+    },
+    reactions:{
+
     }
 })
+
+const Thought = mongoose.model('Thought', thoughtSchema);
+
+const handleError = (err) => console.error(err);
+
+
+module.exports = Thought; 
