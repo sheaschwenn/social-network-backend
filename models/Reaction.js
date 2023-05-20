@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
+const dayjs = require("dayjs");
 
 
 const reactionSchema = new mongoose.Schema({
     reactionId:{
-
+        type: Schema.Types.ObjectId,
+        default: ()=> new Types.ObjectId(),
     },
     reactionBody:{
         type: String,
@@ -16,6 +18,18 @@ const reactionSchema = new mongoose.Schema({
     },
     createdAt:{
         type: Date,
-        default: Date.now
+        default: Date.now,
+        get: function (timestamp) {
+            return dayjs(date).format("MM/DD/YYYY");
+          },
     }
-})
+},
+{
+    toJSON: {
+        getters: true,
+    },
+    id: false,
+}
+)
+
+module.exports = reactionSchema;

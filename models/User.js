@@ -1,30 +1,46 @@
-// need to add id for thoughts and friends 
-const mongoose = require('mongoose');
+// need to add id for thoughts and friends
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-    username:{
-        type: String, 
-        unique: true,
-        required: true,  
-        trim: true
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    match: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+  },
+  thoughts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Thought",
     },
-    email:{
-        type: String, 
-        unique: true,
-        required: true,
-        match: /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/,
+  ],
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
-    thoughts:{
-
+  ],
+},
+{
+    toJSON: {
+        virtuals: true
     },
-    friends:{
+    id:false,
+}
+);
 
-    }
-});
+userSchema.virtual('friendCount').get(function(){
+    return this.friends.length
+})
 
-const User = mongoose.model('User', userSchema);
+const User = model("User", userSchema);
 
 const handleError = (err) => console.error(err);
 
-
-module.exports = User; 
+module.exports = User;
