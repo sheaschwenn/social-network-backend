@@ -1,8 +1,10 @@
 // need to add date format
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+const {Schema, model} = require('mongoose');
 const dayjs = require("dayjs");
+const reactionSchema = require('./Reaction')
 
-const thoughtSchema = new mongoose.Schema({
+const thoughtSchema = new Schema({
   thoughtText: {
     type: String,
     required: true,
@@ -20,10 +22,10 @@ const thoughtSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  reactions: [{ reactionSchema }],
+  reactions: [reactionSchema ],
 });
 
-const Thought = mongoose.model("Thought", thoughtSchema);
+const Thought =model("Thought", thoughtSchema);
 
 const handleError = (err) => console.error(err);
 
