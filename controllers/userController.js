@@ -36,11 +36,34 @@ module.exports = {
             .catch((err) => res.status(500).json(err))
     },
 
-    deleteUser(req,res){
-        User.findOneAndDelete({_id:req.params.userId})
-        .then((user) =>
-        !user? res.status(404).json({message: 'No user with this ID'}): res.json(user))
-        .catch((err) => res.status(500).json(err))
+    // deleteUser(req,res){
+    //     User.findOneAndDelete({_id:req.params.userId})
+    //     .then((user) =>
+    //     { 
+    //         console.log(user)
+    //         Thought.deleteMany({ username: user.username } );
+    //         !user? res.status(404).json({message: 'No user with this ID'}): res.json(user)
+            
+
+    //     })
+    //     .catch((err) => res.status(500).json(err))
+
+    deleteUser(req, res) {
+        User.findOneAndDelete({ _id: req.params.userId })
+          .then((user) => {
+            if (!user) {
+              return res.status(404).json({ message: 'No user with this ID' });
+            }
+      
+            Thought.deleteMany({ username: user.username })
+              .then(() => {
+                console.log('User and associated thoughts deleted successfully');
+                res.json(user);
+              })
+              .catch((err) => res.status(500).json(err));
+          })
+          .catch((err) => res.status(500).json(err));
+      
     },
 
     addFriend(req,res){

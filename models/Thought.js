@@ -14,18 +14,21 @@ const thoughtSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    get: function (timestamp) {
-      return dayjs(date).format("MM/DD/YYYY");
-    },
+    get: date => {return dayjs(date).format("MM/DD/YYYY")}
   },
   username: {
     type: String,
     required: true,
   },
-  reactions: [reactionSchema ],
+  reactions: [reactionSchema],
+},
+{toJSON: {
+    getters: true
+},
+id: false
 });
 
-const Thought =model("Thought", thoughtSchema);
+const Thought = model("Thought", thoughtSchema);
 
 const handleError = (err) => console.error(err);
 
