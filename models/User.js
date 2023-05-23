@@ -1,5 +1,4 @@
-// need to add id for thoughts and friends
-// const mongoose = require("mongoose");
+
 const {Schema, model} = require('mongoose');
 const userSchema = new Schema({
   username: {

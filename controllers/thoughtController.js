@@ -1,6 +1,7 @@
 const { Thought, reactionSchema, User } = require("../models");
 
 module.exports = {
+    // get all thoughts 
  getThoughts(req,res){
     Thought.find()
     .then((thoughts) => {
@@ -8,6 +9,7 @@ module.exports = {
     })
     .catch((err) => res.status(500).json(err))
  },
+//  get a single thought
   getSingleThought(req, res) {
     Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
@@ -18,7 +20,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-
+// create a thought and attach it to a user
   createThought(req, res) {
     Thought.create(req.body)
       .then((thought) => {
@@ -35,13 +37,10 @@ module.exports = {
         return res.status(500).json(err);
       })
 
-    //   .then((user) =>
-    //     !user
-    //       ? res.status(404).json({ message: "No user with this ID" })
-    //       : res.json(user)
-    //   )
+ 
       .catch((err) => res.status(500).json(err));
   },
+//   updates a thought 
   updateThought(req, res){
     Thought.findOneAndUpdate(
         {_id: req.params.thoughtId},
@@ -52,14 +51,16 @@ module.exports = {
             !thought? res.status(404).json({message: 'No thought with this ID'}): res.json(thought))
             .catch((err) => res.status(500).json(err))
   },
+//   deletes a thought 
   deleteThought(req,res){
     Thought.findOneAndDelete(
         {_id: req.params.thoughtId}
     ).then((thought) =>
-    !thought?res.status(404).json({message: 'No thought with this ID'}): res.json(thought))
+    !thought?res.status(404).json({message: 'No thought with this ID'}): res.json({message : "Thought has been deleted"}))
     .catch((err) => res.status(500).json(err))
 },
 
+// create a reaction by adding it to a thought 
 createReaction(req,res){
     Thought.findOneAndUpdate(
         {_id: req.params.thoughtId},
@@ -76,6 +77,7 @@ createReaction(req,res){
           .catch((err) => res.status(500).json(err));
     
 },
+// delete a reaction 
 deleteReaction(req,res){
     Thought.findOneAndUpdate(
         {_id:req.params.thoughtId},
